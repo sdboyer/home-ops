@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controller:
-      type: statefulset
+      type: deployment
       # annotations:
       #   reloader.stakater.com/auto: "true"
     image:
@@ -47,21 +47,21 @@ spec:
         ports:
           http:
             port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+    # probes:
+    #   liveness: &probes
+    #     enabled: true
+    #     custom: true
+    #     spec:
+    #       httpGet:
+    #         path: /ping
+    #         port: *port
+    #       initialDelaySeconds: 0
+    #       periodSeconds: 10
+    #       timeoutSeconds: 1
+    #       failureThreshold: 3
+    #   readiness: *probes
+    #   startup:
+    #     enabled: false
     ingress:
       main:
         enabled: true
