@@ -10,11 +10,11 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  healthChecks:
-    - apiVersion: v1
-      kind: PersistentVolume
-      name: nfs-media-hoperestored-pv
-      namespace: kube-system
+  # healthChecks:
+  #   - apiVersion: v1
+  #     kind: PersistentVolume
+  #     name: nfs-media-hoperestored-pv
+  #     namespace: kube-system
   interval: 30m
   retryInterval: 1m
   timeout: 3m
