@@ -8,3 +8,4 @@ resources:
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./nfs-static/ks.yaml
+  - ./iscsi-static/ks.yaml
