@@ -35,13 +35,13 @@ spec:
       tag: 4.0.0.465@sha256:668da24cc6becfa2b29a7de5bdfc17cf324542c65ad601d5c1e0a68117e616fb
     env:
       TZ: America/Detroit
-      PUSHOVER_DEBUG: "false"
+      # PUSHOVER_DEBUG: "false"
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 80
       SONARR__LOG_LEVEL: info
-    envFrom:
-      - secretRef:
-          name: sonarr-secret
+    # envFrom:
+    #   - secretRef:
+    #       name: sonarr-secret
     service:
       main:
         ports:
