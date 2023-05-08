@@ -99,6 +99,7 @@ spec:
         existingClaim: iscsi-sonarr-pvc
       media:
         enabled: true
+        type: pvc
         storageClass: media-hoperestored
         accessMode: ReadWriteMany
         size: 20Ti
