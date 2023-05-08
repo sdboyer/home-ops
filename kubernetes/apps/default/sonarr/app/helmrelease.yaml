@@ -101,7 +101,7 @@ spec:
         enabled: true
         storageClass: media-hoperestored
         accessMode: ReadWriteMany
-        size: 20TiB
+        size: 20Ti
       # scripts:
       #   enabled: true
       #   type: configMap
