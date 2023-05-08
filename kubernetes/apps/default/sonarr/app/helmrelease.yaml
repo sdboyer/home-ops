@@ -95,14 +95,14 @@ spec:
     persistence:
       config:
         enabled: true
-        type: pvc
+        # type: pvc
         existingClaim: iscsi-sonarr-pvc
       media:
         enabled: true
-        type: pvc
-        storageClass: media-hoperestored
-        accessMode: ReadWriteMany
-        size: 20Ti
+        type: nfs
+        server: hoperestored.h.sdboyer.io
+        path: /mnt/std/media
+        mountPath: /media
       # scripts:
       #   enabled: true
       #   type: configMap
