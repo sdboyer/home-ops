@@ -28,8 +28,8 @@ spec:
   values:
     controller:
       type: deployment
-      # annotations:
-      #   reloader.stakater.com/auto: "true"
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
       tag: 4.0.0.465@sha256:668da24cc6becfa2b29a7de5bdfc17cf324542c65ad601d5c1e0a68117e616fb
@@ -73,7 +73,7 @@ spec:
           #   sub_filter_once on;
           hajimari.io/icon: mdi:television-classic
         hosts:
-          - host: &host "{{ .Release.Name }}.sdboyer.io"
+          - host: &host "sonarr.sdboyer.io"
             paths:
               - path: /
                 pathType: Prefix
@@ -86,17 +86,17 @@ spec:
     #   fsGroup: 568
     #   fsGroupChangePolicy: OnRootMismatch
     #   supplementalGroups: [10000]
-    # volumeClaimTemplates:
-      # - name: config
-      #   mountPath: /config
-      #   accessMode: ReadWriteOnce
-      #   size: 10Gi
-      #   storageClass: ceph-block
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /config
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        storageClass: sonarr-config
     persistence:
-      config:
-        enabled: true
-        # type: pvc
-        existingClaim: iscsi-sonarr-pvc
+      # config:
+      #   enabled: true
+      #   # type: pvc
+      #   existingClaim: iscsi-sonarr-pvc
       media:
         enabled: true
         type: nfs
@@ -113,7 +113,7 @@ spec:
       #   readOnly: true
     resources:
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 250Mi
       limits:
         memory: 2000Mi
