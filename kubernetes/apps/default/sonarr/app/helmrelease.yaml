@@ -100,12 +100,12 @@ spec:
         size: 10Gi
         # type: pvc
         # existingClaim: iscsi-sonarr-pvc
-      # media:
-      #   enabled: true
-      #   type: nfs
-      #   server: hoperestored.h.sdboyer.io
-      #   path: /mnt/std/media
-      #   mountPath: /media
+      media:
+        enabled: true
+        type: nfs
+        server: hoperestored.h.sdboyer.io
+        path: /mnt/std/media
+        mountPath: /media
       # scripts:
       #   enabled: true
       #   type: configMap
