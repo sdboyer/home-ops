@@ -87,19 +87,11 @@ spec:
     #   fsGroup: 568
     #   fsGroupChangePolicy: OnRootMismatch
     #   supplementalGroups: [10000]
-    # volumeClaimTemplates:
-    #   - name: config
-    #     mountPath: /config
-    #     accessMode: ReadWriteOnce
-    #     size: 10Gi
-    #     storageClass: sonarr-config
     persistence:
       config:
         enabled: true
         storageClass: "sonarr-config"
         size: 10Gi
-        # type: pvc
-        # existingClaim: iscsi-sonarr-pvc
       media:
         enabled: true
         type: nfs
