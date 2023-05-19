@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: iscsi-sabznbd
+  namespace: kube-system
+spec:
+  storageClassName: sabznbd-config
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  iscsi:
+    targetPortal: 10.10.1.228
+    iqn: iqn.2018-11.io.sdboyer.h:kube1
+    lun: 4
+    fsType: 'ext4'
+    readOnly: false
