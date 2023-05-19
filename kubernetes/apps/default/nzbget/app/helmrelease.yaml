@@ -44,10 +44,16 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: nfs-config
+        storageClass: config-hoperestored
         size: 10Gi
         mountPath: /config
         subPath: nzbget
+        # enabled: true
+        # type: nfs
+        # server: hoperestored.h.sdboyer.io
+        # path: /mnt/std/kubepv
+        # subPath: nzbget
+        # mountPath: /config
       media:
         enabled: true
         type: nfs
