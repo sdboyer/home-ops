@@ -22,10 +22,10 @@ spec:
       pullPolicy: IfNotPresent
     resources:
       requests:
-        memory: 512Mi
-        cpu: 1
+        memory: 2048Mi
+        cpu: 4
       limits:
-        cpu: 1
+        cpu: 4
         memory: 2560Mi
     securityContext:
       runAsUser: 5506
