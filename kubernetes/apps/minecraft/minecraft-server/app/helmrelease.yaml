@@ -81,10 +81,10 @@ spec:
       # rcon:
       #   enabled: true
       #   password: "${MINECRAFT_BUNGEE_RCON_PASSWORD}"
-    # persistence:
-    #   dataDir:
-    #     enabled: true
-    #     type: pvc
-    #     accessMode: ReadWriteOnce
-    #     size: 20Gi
-    #     storageClass: config-hoperestored
+    persistence:
+      dataDir:
+        enabled: true
+        type: pvc
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        storageClass: config-hoperestored
