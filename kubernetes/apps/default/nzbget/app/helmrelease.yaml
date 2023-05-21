@@ -68,7 +68,7 @@ spec:
         #   hajimari.io/enable: "true"
         #   hajimari.io/icon: download-circle
         hosts:
-          - host: &host nzbget.sdboyer.io
+          - host: &host nzbget.boyers.club
             paths:
               - path: /
                 pathType: Prefix
