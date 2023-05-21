@@ -20,6 +20,20 @@ spec:
       repository: itzg/minecraft-server
       tag: java17-jdk
       pullPolicy: IfNotPresent
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "ipv4.sdboyer.io"
+      hosts:
+        # - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        - host: &host "boyercraft.sdboyer.io"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
     resources:
       requests:
         memory: 2048Mi
