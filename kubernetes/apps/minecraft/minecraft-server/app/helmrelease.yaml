@@ -84,9 +84,10 @@ spec:
     persistence:
       dataDir:
         enabled: true
-        type: nfs
-        server: hoperestored.h.sdboyer.io
-        path: /mnt/std/kubepv/homecraft
+        existingClaim: homecraft-data-pvc
+        # type: nfs
+        # server: hoperestored.h.sdboyer.io
+        # path: /mnt/std/kubepv/homecraft
         # mountPath: /data
         # type: pvc
         # accessMode: ReadWriteOnce
