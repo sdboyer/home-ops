@@ -84,7 +84,11 @@ spec:
     persistence:
       dataDir:
         enabled: true
-        type: pvc
-        accessMode: ReadWriteOnce
-        size: 20Gi
-        storageClass: config-hoperestored
+        type: nfs
+        server: hoperestored.h.sdboyer.io
+        path: /mnt/std/kubepv/homecraft
+        # mountPath: /data
+        # type: pvc
+        # accessMode: ReadWriteOnce
+        # size: 20Gi
+        # storageClass: config-hoperestored
