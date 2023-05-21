@@ -36,11 +36,11 @@ spec:
             - *host
     resources:
       requests:
-        memory: 2048Mi
+        memory: 1536Mi
         cpu: 1
       limits:
         cpu: 2
-        memory: 2560Mi
+        memory: 2048Mi
     securityContext:
       runAsUser: 5506
       fsGroup: 5506
