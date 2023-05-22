@@ -5,9 +5,22 @@ metadata:
   name: homecraft-data-pvc
   namespace: minecraft
 spec:
-  storageClassName: config-hoperestored
+  # storageClass: minecraft
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 40Gi
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/std/kubepv/homecraft
+    server: hoperestored.h.sdboyer.io
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+    - intr
+    - hard
+    - noatime
+    - nodiratime
+    - rsize=1048576
+    - wsize=1048576
