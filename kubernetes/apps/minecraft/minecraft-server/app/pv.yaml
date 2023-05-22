@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/garethr/kubernetes-json-schema/master/v1.6.9-standalone-strict/persistentvolume.json
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: homecraft-data-pv
+  namespace: minecraft
+spec:
+  storageClassName: minecraft-homecraft
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 40Gi
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/std/kubepv/homecraft
+    server: hoperestored.h.sdboyer.io
+  mountOptions:
+    - nfsvers=4.1
+    - tcp
+    - intr
+    - hard
+    - noatime
+    - nodiratime
+    - rsize=1048576
+    - wsize=1048576
