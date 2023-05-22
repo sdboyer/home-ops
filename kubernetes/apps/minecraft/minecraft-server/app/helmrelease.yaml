@@ -37,9 +37,9 @@ spec:
     resources:
       requests:
         memory: 1536Mi
-        cpu: 1
-      limits:
         cpu: 2
+      limits:
+        cpu: 3
         memory: 2048Mi
     securityContext:
       runAsUser: 5506
@@ -51,7 +51,7 @@ spec:
       ftbLegacyJavaFixer: false
       difficulty: easy
       ops: sdboyer
-      maxPlayers: 20
+      maxPlayers: 5
       maxWorldSize: 15000
       allowNether: true
       announcePlayerAchievements: true
@@ -68,14 +68,14 @@ spec:
       gameMode: survival
       motd: "Homecraft @ boyers.club"
       pvp: false
-      levelType: DEFAULT
+      levelType: normal
       # generatorSettings:
       worldSaveName: homecraft
       forceReDownload: false
       removeOldMods: false
       onlineMode: false
-      memory: 1536M
-      jvmOpts: "-server -Xmx1536m -Xms1536m -Xmn768m"
+      memory: 2048M
+      jvmOpts: "-server -Xmx2048m -Xms1536m -Xmn768m"
       jvmXXOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1"
       serviceType: ClusterIP
       # rcon:
