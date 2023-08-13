@@ -37,9 +37,9 @@ spec:
     env:
       TZ: America/Detroit
       # PUSHOVER_DEBUG: "false"
-      radarr__INSTANCE_NAME: radarr
-      radarr__PORT: &port 7878
-      radarr__LOG_LEVEL: info
+      RADARR__INSTANCE_NAME: Radarr
+      RADARR__PORT: &port 7878
+      RADARR__LOG_LEVEL: info
     # envFrom:
     #   - secretRef:
     #       name: radarr-secret
