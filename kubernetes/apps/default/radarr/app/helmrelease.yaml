@@ -90,7 +90,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: "radarr-config"
+        existingClaim: "radarr-config-pvc"
         size: 10Gi
       media:
         enabled: true
