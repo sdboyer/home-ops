@@ -90,7 +90,6 @@ spec:
     persistence:
       config:
         enabled: true
-        type: persistentVolumeClaim
         storageClass: radarr-config-pv
         size: 10Gi
       media:
