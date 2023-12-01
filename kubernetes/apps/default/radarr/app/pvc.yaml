@@ -6,7 +6,7 @@ metadata:
   name: radarr-config-pvc
   namespace: default
 spec:
-  storageClassName: radarr-config
+  volumeName: iscsi-radarr
   accessModes:
     - ReadWriteOnce
   resources:
