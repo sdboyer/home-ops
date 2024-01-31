@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: iscsi-sonarr
+  namespace: kube-system
+spec:
+  storageClassName: sonarr-config
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  iscsi:
+    targetPortal: 10.10.1.228
+    iqn: iqn.2018-11.io.sdboyer.h:kube1
+    lun: 3
+    fsType: 'ext4'
+    readOnly: false

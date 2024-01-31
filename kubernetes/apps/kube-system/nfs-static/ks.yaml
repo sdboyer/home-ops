@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-nfs-static
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/kube-system/nfs-static/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  # healthChecks:
+  #   - apiVersion: v1
+  #     kind: PersistentVolume
+  #     name: nfs-media-hoperestored-pv
+  #     namespace: kube-system
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
