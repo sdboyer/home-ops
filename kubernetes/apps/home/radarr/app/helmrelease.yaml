@@ -1,16 +1,16 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: radarr
+  name: &app radarr
   namespace: home
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.4.0
+      version: 2.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,75 +27,86 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: deployment
-      # annotations:
-      #   reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/radarr-develop
-      tag: 4.7.3.7731@sha256:0230f755917c8626902a05d876b2746fb5ace54e1a5de08bec718bdbc743a0a7
-    env:
-      TZ: America/Detroit
-      # PUSHOVER_DEBUG: "false"
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 7878
-      RADARR__LOG_LEVEL: info
-    # envFrom:
-    #   - secretRef:
-    #       name: radarr-secret
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr-develop
+              tag: 5.3.2.8504@sha256:d87bccdcac992e5d43f93f355ee714e137b21b77df21e250bc9b3ac4d14708db
+            env:
+              TZ: "${TIMEZONE}"
+              PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+              # PUSHOVER_DEBUG: "false"
+              # PUSHOVER_PRIORITY: "0"
+              # RADARR__AUTHENTICATION_METHOD: External
+              # RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 8080
+              RADARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              RADARR__LOG_LEVEL: info
+              RADARR__THEME: dark
+            # envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256M
+              limits:
+                memory: 1Gi
     service:
       main:
         ports:
           http:
             port: *port
-    # probes:
-    #   liveness: &probes
-    #     enabled: true
-    #     custom: true
-    #     spec:
-    #       httpGet:
-    #         path: /ping
-    #         port: *port
-    #       initialDelaySeconds: 0
-    #       periodSeconds: 10
-    #       timeoutSeconds: 1
-    #       failureThreshold: 3
-    #   readiness: *probes
-    #   startup:
-    #     enabled: false
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        className: "nginx"
         annotations:
-          # nginx.ingress.kubernetes.io/configuration-snippet: |
-          #   proxy_set_header Accept-Encoding "";
-          #   sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/radarr/nord.css"></head>';
-          #   sub_filter_once on;
-          #hajimari.io/icon: mdi:television-classic
+          # nginx.ingress.kubernetes.io/auth-method: GET
+          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local.:8888/api/verify
+          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
+          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+          hajimari.io/icon: mdi:television-classic
         hosts:
-          - host: &host "radarr.boyers.club"
+          - host: *host
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    # podSecurityContext:
-    #   runAsUser: 568
-    #   runAsGroup: 568
-    #   fsGroup: 568
-    #   fsGroupChangePolicy: OnRootMismatch
-    #   supplementalGroups: [10000]
     persistence:
       config:
         enabled: true
-        storageClass: radarr-config-pv
+        storageClass: "radarr-config"
         size: 10Gi
       media:
         enabled: true
         type: nfs
-        server: hoperestored.h.sdboyer.io
+        # TODO fix network DNS
+        # server: hoperestored.h.sdboyer.io
+        server: "10.10.1.228"
         path: /mnt/std/media
         mountPath: /media
       # scripts:
