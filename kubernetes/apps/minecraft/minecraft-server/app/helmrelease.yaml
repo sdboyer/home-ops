@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: boyercraft
+  namespace: minecraft
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: minecraft
+      version: 4.7.4
+      sourceRef:
+        kind: HelmRepository
+        name: itzg-minecraft-charts
+        namespace: flux-system
+  values:
+    image:
+      repository: itzg/minecraft-server
+      tag: java17-jdk
+      pullPolicy: IfNotPresent
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "ipv4.boyers.club"
+        nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8
+      hosts:
+        # - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        - host: &host "homecraft.boyers.club"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+    resources:
+      requests:
+        memory: 1536Mi
+        cpu: 2
+      limits:
+        cpu: 3
+        memory: 2304Mi
+    securityContext:
+      runAsUser: 5506
+      fsGroup: 5506
+    minecraftServer:
+      eula: "TRUE"
+      version: "LATEST"
+      type: "PAPER"
+      ftbLegacyJavaFixer: false
+      difficulty: easy
+      ops: sdboyer
+      maxPlayers: 5
+      maxWorldSize: 15000
+      allowNether: true
+      announcePlayerAchievements: true
+      enableCommandBlock: true
+      forcegameMode: false
+      generateStructures: true
+      hardcore: false
+      maxBuildHeight: 256
+      maxTickTime: 60000
+      spawnAnimals: true
+      spawnMonsters: true
+      spawnNPCs: true
+      viewDistance: 10
+      gameMode: survival
+      motd: "Homecraft @ boyers.club"
+      pvp: false
+      levelType: normal
+      # generatorSettings:
+      worldSaveName: homecraft
+      forceReDownload: false
+      removeOldMods: false
+      onlineMode: false
+      memory: 2048M
+      jvmOpts: "-server -Xmx2048m -Xms1536m -Xmn768m"
+      jvmXXOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1"
+      serviceType: ClusterIP
+      # rcon:
+      #   enabled: true
+      #   password: "${MINECRAFT_BUNGEE_RCON_PASSWORD}"
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: homecraft-data-pvc
+        # type: nfs
+        # server: hoperestored.h.sdboyer.io
+        # path: /mnt/std/kubepv/homecraft
+        # mountPath: /data
+        # type: pvc
+        # accessMode: ReadWriteOnce
+        # size: 20Gi
+        # storageClass: config-hoperestored

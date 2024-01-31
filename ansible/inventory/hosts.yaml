@@ -1,0 +1,22 @@
+---
+kubernetes:
+  children:
+    master:
+      hosts:
+        "rpi1.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.201"
+        "rpi2.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.202"
+        "rpi3.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.203"
+    worker:
+      hosts:
+        "rpi4.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.204"
+        "rpi5.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.205"

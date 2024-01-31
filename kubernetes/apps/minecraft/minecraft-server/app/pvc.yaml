@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/garethr/kubernetes-json-schema/master/v1.6.9-standalone-strict/persistentvolumeclaim.json
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homecraft-data-pvc
+  namespace: minecraft
+spec:
+  storageClassName: minecraft-homecraft
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
