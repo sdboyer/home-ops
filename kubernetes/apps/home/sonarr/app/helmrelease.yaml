@@ -104,7 +104,9 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: hoperestored.h.sdboyer.io
+        # TODO fix network DNS
+        # server: hoperestored.h.sdboyer.io
+        server: "10.10.1.228"
         path: /mnt/std/media
         mountPath: /media
       # scripts:
