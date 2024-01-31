@@ -1,0 +1,114 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: deployment
+      # annotations:
+      #   reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.7.3.7731@sha256:0230f755917c8626902a05d876b2746fb5ace54e1a5de08bec718bdbc743a0a7
+    env:
+      TZ: America/Detroit
+      # PUSHOVER_DEBUG: "false"
+      RADARR__INSTANCE_NAME: Radarr
+      RADARR__PORT: &port 7878
+      RADARR__LOG_LEVEL: info
+    # envFrom:
+    #   - secretRef:
+    #       name: radarr-secret
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    # probes:
+    #   liveness: &probes
+    #     enabled: true
+    #     custom: true
+    #     spec:
+    #       httpGet:
+    #         path: /ping
+    #         port: *port
+    #       initialDelaySeconds: 0
+    #       periodSeconds: 10
+    #       timeoutSeconds: 1
+    #       failureThreshold: 3
+    #   readiness: *probes
+    #   startup:
+    #     enabled: false
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          # nginx.ingress.kubernetes.io/configuration-snippet: |
+          #   proxy_set_header Accept-Encoding "";
+          #   sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.devbu.io/css/base/radarr/nord.css"></head>';
+          #   sub_filter_once on;
+          #hajimari.io/icon: mdi:television-classic
+        hosts:
+          - host: &host "radarr.boyers.club"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    # podSecurityContext:
+    #   runAsUser: 568
+    #   runAsGroup: 568
+    #   fsGroup: 568
+    #   fsGroupChangePolicy: OnRootMismatch
+    #   supplementalGroups: [10000]
+    persistence:
+      config:
+        enabled: true
+        storageClass: radarr-config-pv
+        size: 10Gi
+      media:
+        enabled: true
+        type: nfs
+        server: hoperestored.h.sdboyer.io
+        path: /mnt/std/media
+        mountPath: /media
+      # scripts:
+      #   enabled: true
+      #   type: configMap
+      #   name: radarr-configmap
+      #   subPath: pushover-notify.sh
+      #   mountPath: /scripts/pushover-notify.sh
+      #   defaultMode: 0775
+      #   readOnly: true
+    resources:
+      requests:
+        cpu: 25m
+        memory: 500Mi
+      limits:
+        memory: 1000Mi
