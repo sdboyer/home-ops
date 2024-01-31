@@ -99,7 +99,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: "radarr-config"
+        storageClass: "radarr-config-pv"
         size: 10Gi
       media:
         enabled: true
