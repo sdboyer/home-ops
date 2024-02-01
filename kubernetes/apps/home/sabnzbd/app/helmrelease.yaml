@@ -92,13 +92,17 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
     volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+      # - name: config
+      #   mountPath: /config
+      #   accessMode: ReadWriteOnce
+      #   size: 1Gi
+      #   storageClass: ceph-block
     # Note: If downloading very large nzbs it might be worth using NFS for your download directory.
     persistence:
+      config:
+        enabled: true
+        storageClass: "sabnzbd-config"
+        size: 10Gi
       media:
         enabled: true
         type: nfs
@@ -108,8 +112,6 @@ spec:
       incomplete:
         enabled: true
         type: emptyDir
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
     resources:
       requests:
         cpu: 20m
