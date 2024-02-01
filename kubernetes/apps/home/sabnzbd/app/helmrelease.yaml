@@ -43,6 +43,7 @@ spec:
         sabnzbd.default.svc,
         sabnzbd.default.svc.cluster,
         sabnzbd.default.svc.cluster.local,
+        sabnzbd-internal.boyers.club
         sabnzbd.boyers.club
     # envFrom:
     #   - secretRef:
@@ -70,7 +71,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         annotations:
           # nginx.ingress.kubernetes.io/configuration-snippet: |
           #   proxy_set_header Accept-Encoding "";
@@ -78,7 +79,7 @@ spec:
           #   sub_filter_once on;
           hajimari.io/icon: mdi:download
         hosts:
-          - host: &host "{{ .Release.Name }}.boyers.club"
+          - host: &host "{{ .Release.Name }}-internal.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
