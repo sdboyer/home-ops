@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./sabnzbd/ks.yaml
-  - ./sonarr/ks.yaml
+    #  - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./nzbget/ks.yaml
