@@ -27,7 +27,7 @@ spec:
       main:
         image:
           # https://hub.docker.com/r/linuxserver/nzbget
-          repository: lscr.io/linuxserver/nzbget
+          repository: lscr.io/linuxserver/docker-nzbget
           tag: latest
           pullPolicy: IfNotPresent
         env:
