@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: iscsi-sabznbd
-  namespace: kube-system
+  name: sabnzbd-config
+  namespace: home
 spec:
-  storageClassName: sabznbd-config
+  storageClassName: sabnzbd-config-pv
   capacity:
-    storage: 20Gi
+    storage: 30Gi
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem

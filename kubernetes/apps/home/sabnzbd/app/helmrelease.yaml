@@ -85,13 +85,13 @@ spec:
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
-    volumeClaimTemplates:
+    # podSecurityContext:
+    #   runAsUser: 568
+    #   runAsGroup: 568
+    #   fsGroup: 568
+    #   fsGroupChangePolicy: OnRootMismatch
+    #   supplementalGroups: [10000]
+    # volumeClaimTemplates:
       # - name: config
       #   mountPath: /config
       #   accessMode: ReadWriteOnce
@@ -101,12 +101,14 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: "sabnzbd-config"
+        storageClass: sabnzbd-config-pv
         size: 10Gi
       media:
         enabled: true
         type: nfs
-        server: hoperestored.h.sdboyer.io
+        # TODO fix network DNS
+        # server: hoperestored.h.sdboyer.io
+        server: "10.10.1.228"
         path: /mnt/std/media
         mountPath: /media
       incomplete:
