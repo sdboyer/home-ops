@@ -43,7 +43,7 @@ spec:
         sabnzbd.default.svc,
         sabnzbd.default.svc.cluster,
         sabnzbd.default.svc.cluster.local,
-        sabnzbd-internal.boyers.club
+        sabnzbd-internal.boyers.club,
         sabnzbd.boyers.club
     # envFrom:
     #   - secretRef:
