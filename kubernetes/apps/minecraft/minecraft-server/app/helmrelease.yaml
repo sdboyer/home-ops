@@ -41,6 +41,9 @@ spec:
       limits:
         cpu: 3
         memory: 2304Mi
+    probes:
+      readiness: false
+      liveness: false
     securityContext:
       runAsUser: 5506
       fsGroup: 5506
