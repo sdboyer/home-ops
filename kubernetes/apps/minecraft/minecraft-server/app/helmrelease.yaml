@@ -51,6 +51,7 @@ spec:
       runAsUser: 5506
       fsGroup: 5506
     serviceAnnotations:
+      io.cilium/lb-ipam-ips: "10.10.1.14"
       mc-router.itzg.me/externalServerName: "boyercraft.${SECRET_DOMAIN}"
     minecraftServer:
       eula: "TRUE"
