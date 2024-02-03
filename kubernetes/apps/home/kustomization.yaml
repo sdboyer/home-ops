@@ -6,4 +6,3 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
-  - ./nzbget/ks.yaml
