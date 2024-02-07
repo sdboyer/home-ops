@@ -1,0 +1,13 @@
+[Unit]
+Description=Force NetworkManager to take over initrd-initiated eth0 connection
+
+[Service]
+ExecStart=/bin/bash /usr/sbin/force-nm.sh
+
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+After=iscsid.service
+After=NetworkManager.service
+Requires=NetworkManager.service

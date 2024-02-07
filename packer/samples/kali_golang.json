@@ -1,0 +1,19 @@
+{
+  "variables": {
+  },
+  "builders": [
+    {
+      "type": "arm-image",
+      "iso_url": "https://images.offensive-security.com/arm-images/kali-linux-2020.2a-rpi3-nexmon.img.xz",
+      "iso_checksum": "sha256:ea6e4ffc142a9216de18119ff97dcb8741f7a69d28ba947eb5bb61b5e5340a0c"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get update && apt-get install -y golang"
+      ]
+    }
+  ]
+}

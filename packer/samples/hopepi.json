@@ -1,0 +1,116 @@
+{
+  "variables": {
+    "pi_ip": "10.10.1.159",
+    "pi_netmask": "255.0.0.0",
+    "pi_mac": "dc-a6-32-80-7e-08",
+    "hostname": "",
+    "iscsi_target_iqn": "",
+    "iscsi_target_ip": "",
+    "root_pub_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA01xxdHeWb2eEXWjhSn7cTW5auWFt/UQP0/7nB+OSUundzZSc8edwipS18QsxJoaB+bmCFEBebwCpIrQ6fgypL3vonZVnWWouKtuS9sBDqLWi1m3CvlWtv31ZgamLiKpMbyhdAe3YhyijwKFTRznqvZzh30x7wAagCbmsjgIxeSM0w//Wk1RIUgh/wTeLi9KShm8PhOd0ZjJpxQ8UwBd4i3FfVWJzySvCOsPxAUG6lUGWz2vJ/doDmq0rV/T9pBvFhgLEmvO1tmXFAakQBXGZIMozuOfPZR5HbN/LoHLQFVEwb2IBk7M31AeOs95WDoXSBMm2d4HnusbHmX/W71B8Lw== /Users/sdboyer/.ssh/id_rsa",
+    "nfs_hostname": "hoperestored.h.sdboyer.io",
+    "nfs_ip": "",
+    "nfs_bootroot": ""
+  },
+  "builders": [{
+    "type": "arm-image",
+    "image_type": "raspberrypi",
+    "iso_url": "http://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-05-03/2023-05-03-raspios-bullseye-arm64-lite.img.xz",
+    "iso_checksum": "868cca691a75e4280c878eb6944d95e9789fa5f4bbce2c84060d4c39d057a042"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive",
+        "DEBCONF_NONINTERACTIVE_SEEN=true"
+      ],
+      "inline": [
+        "echo 'tzdata tzdata/Areas select US' | debconf-set-selections",
+        "echo 'tzdata tzdata/Zones/US select Eastern' | debconf-set-selections",
+        "rm /etc/timezone",
+        "rm /etc/localtime",
+        "dpkg-reconfigure -f noninteractive tzdata"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "#echo 'Setting up network...'",
+        "#echo interface eth0 >> /etc/dhcpcd.conf",
+        "#echo static ip_address={{user `pi_ip`}} >> /etc/dhcpcd.conf"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Setting up hostname...'",
+        "echo {{user `hostname`}} > /etc/hostname",
+        "sed -i -r -e 's/(.*)raspberrypi(.*?)$/\\1{{user `hostname`}}\\2 {{user `hostname`}}.h.sdboyer.io/g' /etc/hosts"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Setting up sshd...'",
+        "touch /boot/ssh",
+        "sed -i -r -e 's/#?.*?PermitRootLogin.*?$/PermitRootLogin without-password/g' /etc/ssh/sshd_config",
+        "sed -i -r -e 's/#?.*?PasswordAuthentication.*?$/PasswordAuthentication no/g' /etc/ssh/sshd_config",
+        "mkdir -p /root/.ssh/",
+        "chmod 700 /root/.ssh",
+        "echo {{user `root_pub_key`}} >> /root/.ssh/authorized_keys",
+        "chmod 644 /root/.ssh/authorized_keys"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Disabling wifi...'",
+        "echo 'dtoverlay=disable-wifi' >> /boot/config.txt"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Disabling bluetooth...'",
+        "echo 'dtoverlay=disable-bt' >> /boot/config.txt"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Installing additional packages...'",
+        "apt install -y initramfs-tools open-iscsi hdparm rbd-nbd ceph-common"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Switching to legacy iptables (avoid k3s bug)...'",
+        "sudo update-alternatives --set iptables /usr/sbin/iptables-legacy"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Disabling erroneous iscsi kernel module...'",
+        "sed -ie 's/ib_iser/#ib_iser/g' /lib/modules-load.d/open-iscsi.conf",
+        "echo 'Setting up /etc/iscsi/initiatorname.iscsi...'",
+        "echo InitiatorName=iqn.2021-06.io.sdboyer.h:{{user `hostname`}} > /etc/iscsi/initiatorname.iscsi",
+        "echo 'Updating apt...'",
+        "apt update",
+        "apt full-upgrade -y"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Modifying boot and root files...'",
+        "echo \" ip={{user `pi_ip`}}:::{{user `pi_netmask`}}:{{user `hostname`}}:eth0:static ISCSI_INITIATOR=$(cat /etc/iscsi/initiatorname.iscsi | cut -d '=' -f 2) ISCSI_TARGET_NAME={{user `iscsi_target_iqn`}} ISCSI_TARGET_IP={{user `iscsi_target_ip`}} rw\" >> /boot/cmdline.txt",
+        "echo '\ninitramfs initrd.img followkernel' >> /boot/config.txt",
+        "sed -i -r -e \"s@.*/boot +.*@{{user `nfs_ip`}}:{{user `nfs_bootroot`}}/{{user `hostname`}} /boot nfs defaults,vers=4.1,proto=tcp 0 0@\" /etc/fstab",
+        "sed -i -r -e \"s@.*/ +.*@LABEL={{user `hostname`}}root / ext4 _netdev,noatime 0 1@\" /etc/fstab",
+        "sed -i -r -e \"s@(.*root=)PARTUUID=[A-Za-z0-9-]+(.*)@\\1LABEL={{user `hostname`}}root\\2@\" /boot/cmdline.txt"
+      ]
+    }
+  ]
+}
