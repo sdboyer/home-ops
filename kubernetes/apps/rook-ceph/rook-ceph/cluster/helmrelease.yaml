@@ -60,7 +60,7 @@ spec:
             cpu: 100m
             memory: 512Mi
           limits:
-            memory: 2Gi
+            memory: 1Gi
         mon:
           requests:
             cpu: 50m
@@ -69,10 +69,10 @@ spec:
             memory: 1Gi
         osd:
           requests:
-            cpu: 500m
-            memory: 2Gi
+            cpu: 250m
+            memory: 512Mi
           limits:
-            memory: 6Gi
+            memory: 2Gi
         mgr-sidecar:
           requests:
             cpu: 50m
@@ -87,19 +87,19 @@ spec:
         ssl: false
       storage:
         useAllNodes: true
-        useAllDevices: false
-        # deviceFilter: nvme0n1
+        useAllDevices: true
+        devicePathFilter: '/dev/disk/by-id/.*usb.*'
         config:
           osdsPerDevice: "1"
-      placement:
-        mgr: &placement
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-        mon: *placement
+      # placement:
+      #   mgr: &placement
+      #     nodeAffinity:
+      #       requiredDuringSchedulingIgnoredDuringExecution:
+      #         nodeSelectorTerms:
+      #           - matchExpressions:
+      #               - key: node-role.kubernetes.io/control-plane
+      #                 operator: Exists
+      #   mon: *placement
     # cephBlockPools:
     #   - name: ceph-blockpool
     #     spec:
