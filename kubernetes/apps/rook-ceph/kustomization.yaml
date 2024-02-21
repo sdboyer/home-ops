@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ./notifications.yaml
+  # Commented for when i get observability set up
+  # - ./notifications.yaml
   # Flux-Kustomizations
   - ./rook-ceph/ks.yaml
