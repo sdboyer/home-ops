@@ -87,8 +87,10 @@ spec:
         ssl: false
       storage:
         useAllNodes: true
-        useAllDevices: true
-        devicePathFilter: '/dev/mapper/cephvg.*'
+        useAllDevices: false
+        devices:
+          - name: '/dev/disk/by-id/dm-name-cephvg1-ceph1'
+          - name: '/dev/disk/by-id/dm-name-cephvg2-ceph2'
         config:
           osdsPerDevice: "1"
       # placement:
