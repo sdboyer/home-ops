@@ -119,7 +119,7 @@ build {
   provisioner "shell" {
     inline = [
       "echo 'Installing additional packages...'",
-      "apt install -y open-iscsi vim hdparm rbd-nbd ceph-common",
+      "apt install -y open-iscsi vim hdparm rbd-nbd ceph-common lvm2",
     ]
   }
 
