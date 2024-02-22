@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
+  - ./democratic-csi.yaml
   - ./external-dns.yaml
   - ./ingress-nginx.yaml
   - ./itzg-minecraft-charts.yaml
