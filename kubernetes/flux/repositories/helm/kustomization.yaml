@@ -6,6 +6,7 @@ resources:
   - ./cilium.yaml
   - ./democratic-csi.yaml
   - ./external-dns.yaml
+  - ./grafana-charts.yaml
   - ./ingress-nginx.yaml
   - ./itzg-minecraft-charts.yaml
   - ./k8s-gateway.yaml
