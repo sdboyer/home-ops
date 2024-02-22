@@ -88,7 +88,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: true
-        devicePathFilter: '/dev/disk/by-id/.*usb.*'
+        devicePathFilter: '/dev/mapper/cephvg.*'
         config:
           osdsPerDevice: "1"
       # placement:
