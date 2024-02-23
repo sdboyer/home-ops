@@ -20,3 +20,12 @@ kubernetes:
         "rpi5.h.sdboyer.io":
           ansible_user: "sdboyer"
           ansible_host: "10.10.1.205"
+        "rpi6.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.206"
+        "rpi7.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.207"
+        "rpi8.h.sdboyer.io":
+          ansible_user: "sdboyer"
+          ansible_host: "10.10.1.208"
