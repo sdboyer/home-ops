@@ -36,11 +36,11 @@ spec:
             - *host
     resources:
       requests:
-        memory: 1536Mi
+        memory: 2Gi
         cpu: 2
       limits:
         cpu: 3
-        memory: 2304Mi
+        memory: 3Gi
     livenessProbe:
       enabled: false
     readinessProbe:
