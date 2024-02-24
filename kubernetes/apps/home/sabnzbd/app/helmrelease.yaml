@@ -53,19 +53,19 @@ spec:
         ports:
           http:
             port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api?mode=version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
+    # probes:
+    #   liveness: &probes
+    #     enabled: true
+    #     custom: true
+    #     spec:
+    #       httpGet:
+    #         path: /api?mode=version
+    #         port: *port
+    #       initialDelaySeconds: 0
+    #       periodSeconds: 10
+    #       timeoutSeconds: 1
+    #       failureThreshold: 3
+    #   readiness: *probes
       startup:
         enabled: false
     ingress:
@@ -79,7 +79,7 @@ spec:
           #   sub_filter_once on;
           hajimari.io/icon: mdi:download
         hosts:
-          - host: &host "{{ .Release.Name }}-internal.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
