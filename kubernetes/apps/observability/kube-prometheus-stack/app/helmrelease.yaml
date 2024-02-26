@@ -36,26 +36,28 @@ spec:
       enabled: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: internal
-        hosts:
-          - &host alertmanager.${SECRET_SYS_DOMAIN}
-        tls:
-          - hosts:
-              - *host
-      alertmanagerSpec:
-        replicas: 2
-        useExistingSecret: true
-        configSecret: alertmanager-secret
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: openebs-hostpath
-              resources:
-                requests:
-                  storage: 1Gi
+      # TODO re-enable
+      enabled: false
+      # ingress:
+      #   enabled: true
+      #   pathType: Prefix
+      #   ingressClassName: internal
+      #   hosts:
+      #     - &host alertmanager.${SECRET_SYS_DOMAIN}
+      #   tls:
+      #     - hosts:
+      #         - *host
+      # alertmanagerSpec:
+      #   replicas: 2
+      #   useExistingSecret: true
+      #   configSecret: alertmanager-secret
+      #   storage:
+      #     volumeClaimTemplate:
+      #       spec:
+      #         storageClassName: openebs-hostpath
+      #         resources:
+      #           requests:
+      #             storage: 1Gi
     kubelet:
       enabled: true
       serviceMonitor:
