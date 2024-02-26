@@ -74,14 +74,18 @@ spec:
         instance_id: k8s-freenas-iscsi
         httpConnection:
           protocol: http
-          host: hoperestored.h.sdboyer.io
+          # DNS is sometimes failing resolution?!?
+          # host: "${NAS_HOSTNAME}"
+          host: "${NAS_IP}"
           port: 80
           username: root
           apiKey: "${SECRET_HOPERESTORED_APIKEY}"
           allowInsecure: true
           apiVersion: 2
         sshConnection:
-          host: hoperestored.h.sdboyer.io
+          # DNS is sometimes failing resolution?!?
+          # host: "${NAS_HOSTNAME}"
+          host: "${NAS_IP}"
           port: 22
           username: k8s-csi
           # use either password or key
