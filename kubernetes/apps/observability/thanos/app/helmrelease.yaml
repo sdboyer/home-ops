@@ -45,7 +45,7 @@ spec:
         access_key: "${AWS_ACCESS_KEY_ID}"
         secret_key: "${AWS_SECRET_ACCESS_KEY}"
         endpoint: "${AWS_S3_ENDPOINT}"
-        bucket: thanos-bucket
+        bucket: thanos
     receive:
       enabled: false
       networkPolicy:
