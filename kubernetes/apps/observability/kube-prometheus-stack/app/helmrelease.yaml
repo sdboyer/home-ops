@@ -136,10 +136,10 @@ spec:
           cluster: main
         resources:
           requests:
-            memory: 384Mi
+            # memory: 384Mi
             cpu: 500m
           limits:
-            memory: 512Mi
+            # memory: 512Mi
             cpu: 1
         storageSpec:
           volumeClaimTemplate:

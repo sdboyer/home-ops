@@ -29,17 +29,13 @@ spec:
       namespace: openebs-system
     - name: redis
       namespace: database
-  #   - targetPath: objstoreConfig.config.region
-  #     kind: ConfigMap
-  #     name: thanos-bucket-v2
-  #     valuesKey: BUCKET_REGION
   values:
     image:
       registry: quay.io
       repository: thanos/thanos
       tag: v0.34.1
     objstoreConfig:
-      type: s3
+      type: S3
       config:
         insecure: true
         access_key: "${AWS_ACCESS_KEY_ID}"
