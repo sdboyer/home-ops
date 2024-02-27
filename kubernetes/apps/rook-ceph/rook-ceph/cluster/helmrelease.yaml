@@ -69,8 +69,8 @@ spec:
             memory: 1Gi
         osd:
           requests:
-            cpu: 250m
-            memory: 512Mi
+            cpu: 500m
+            memory: 1Gi
           limits:
             memory: 2Gi
         mgr-sidecar:
@@ -86,22 +86,26 @@ spec:
         urlPrefix: /
         ssl: false
       storage:
-        useAllNodes: true
+        useAllNodes: false
+        nodes:
+          - name: rpi6.h.sdboyer.io
+          - name: rpi7.h.sdboyer.io
+          - name: rpi8.h.sdboyer.io
         useAllDevices: false
         devices:
           - name: '/dev/disk/by-id/dm-name-cephvg1-ceph1'
           - name: '/dev/disk/by-id/dm-name-cephvg2-ceph2'
         config:
           osdsPerDevice: "1"
-      # placement:
-      #   mgr: &placement
-      #     nodeAffinity:
-      #       requiredDuringSchedulingIgnoredDuringExecution:
-      #         nodeSelectorTerms:
-      #           - matchExpressions:
-      #               - key: node-role.kubernetes.io/control-plane
-      #                 operator: Exists
-      #   mon: *placement
+      placement:
+        mgr: &placement
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/ceph-node
+                      operator: Exists
+        mon: *placement
     # cephBlockPools:
     #   - name: ceph-blockpool
     #     spec:
@@ -130,43 +134,43 @@ spec:
     #   name: csi-ceph-blockpool
     #   isDefault: false
     #   deletionPolicy: Delete
-    cephFileSystems:
-      - name: ceph-filesystem
-        spec:
-          metadataPool:
-            replicated:
-              size: 3
-          dataPools:
-            - failureDomain: host
-              replicated:
-                size: 3
-              name: data0
-          metadataServer:
-            activeCount: 1
-            activeStandby: true
-            resources:
-              requests:
-                cpu: 100m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
-            priorityClassName: system-cluster-critical
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          pool: data0
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          volumeBindingMode: Immediate
-          parameters:
-            # csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            # csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            # csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            # csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            # csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            # csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
+    # cephFileSystems:
+    #   - name: ceph-filesystem
+    #     spec:
+    #       metadataPool:
+    #         replicated:
+    #           size: 3
+    #       dataPools:
+    #         - failureDomain: host
+    #           replicated:
+    #             size: 3
+    #           name: data0
+    #       metadataServer:
+    #         activeCount: 1
+    #         activeStandby: true
+    #         resources:
+    #           requests:
+    #             cpu: 100m
+    #             memory: 1Gi
+    #           limits:
+    #             memory: 2Gi
+    #         priorityClassName: system-cluster-critical
+    #     storageClass:
+    #       enabled: true
+    #       isDefault: false
+    #       name: ceph-filesystem
+    #       pool: data0
+    #       reclaimPolicy: Delete
+    #       allowVolumeExpansion: true
+    #       volumeBindingMode: Immediate
+    #       parameters:
+    #         # csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+    #         # csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+    #         # csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+    #         # csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+    #         # csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+    #         # csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+    #         csi.storage.k8s.io/fstype: ext4
     cephFileSystemVolumeSnapshotClass:
       enabled: true
       name: csi-ceph-filesystem
