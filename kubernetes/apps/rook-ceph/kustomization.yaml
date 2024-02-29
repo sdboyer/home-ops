@@ -8,4 +8,4 @@ resources:
   # Commented for when i get observability set up
   # - ./notifications.yaml
   # Flux-Kustomizations
-  - ./rook-ceph/ks.yaml
+  # - ./rook-ceph/ks.yaml
