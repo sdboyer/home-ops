@@ -32,15 +32,15 @@ spec:
       namespace: database
   valuesFrom:
     - targetPath: objstoreConfig.config.bucket
-      kind: ConfigMap
+      kind: Secret
       name: thanos-secret
       valuesKey: s3-bucket
     - targetPath: objstoreConfig.config.endpoint
-      kind: ConfigMap
+      kind: Secret
       name: thanos-secret
       valuesKey: s3-endpoint
     - targetPath: objstoreConfig.config.region
-      kind: ConfigMap
+      kind: Secret
       name: thanos-secret
       valuesKey: s3-region
     - targetPath: objstoreConfig.config.access_key
