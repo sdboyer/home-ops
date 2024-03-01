@@ -46,7 +46,7 @@ spec:
     - targetPath: objstoreConfig.config.access_key
       kind: Secret
       name: thanos-secret
-      valuesKey: access_key
+      valuesKey: access-key
     - targetPath: objstoreConfig.config.secret_key
       kind: Secret
       name: thanos-secret
