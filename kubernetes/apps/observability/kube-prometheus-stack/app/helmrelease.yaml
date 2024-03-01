@@ -130,9 +130,7 @@ spec:
               name: thanos-objstore-secret
               key: objstore.yml
         retention: 2d
-        retentionSize: 15GB
-        externalLabels:
-          cluster: main
+        retentionSize: 2GB
         resources:
           requests:
             # memory: 384Mi
