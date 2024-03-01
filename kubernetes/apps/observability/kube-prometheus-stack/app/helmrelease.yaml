@@ -27,10 +27,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: openebs
-      namespace: openebs-system
-    # - name: thanos
-    #   namespace: observability
+    - name: thanos
+      namespace: observability
   values:
     crds:
       enabled: true
@@ -54,7 +52,7 @@ spec:
       #   storage:
       #     volumeClaimTemplate:
       #       spec:
-      #         storageClassName: openebs-hostpath
+      #         storageClassName: "${CLUSTER_STORAGE_BLOCK}"
       #         resources:
       #           requests:
       #             storage: 1Gi
@@ -106,10 +104,10 @@ spec:
         tls:
           - hosts:
               - *host
-      # thanosService:
-      #   enabled: true
-      # thanosServiceMonitor:
-      #   enabled: true
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
       prometheusSpec:
         replicas: 2
         replicaExternalLabelName: __replica__
@@ -124,13 +122,13 @@ spec:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
-        # thanos:
-        #   image: quay.io/thanos/thanos:${THANOS_VERSION}
-        #   version: "${THANOS_VERSION#v}"
-        #   objectStorageConfig:
-        #     existingSecret:
-        #       name: thanos-objstore-secret
-        #       key: objstore.yml
+        thanos:
+          image: quay.io/thanos/thanos:${THANOS_VERSION}
+          version: "${THANOS_VERSION#v}"
+          objectStorageConfig:
+            existingSecret:
+              name: thanos-objstore-secret
+              key: objstore.yml
         retention: 2d
         retentionSize: 15GB
         externalLabels:
