@@ -133,7 +133,7 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabel: __replica__
-      # alertmanagers: ["http://alertmanager-operated.observability.svc.cluster.local:9093"]
+      alertmanagers: ["http://alertmanager-operated.observability.svc.cluster.local:9093"]
       extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
