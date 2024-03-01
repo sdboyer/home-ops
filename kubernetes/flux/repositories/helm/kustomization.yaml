@@ -17,7 +17,7 @@ resources:
   - ./democratic-csi.yaml
   # - ./emqx.yaml
   - ./external-dns.yaml
-  # - ./external-secrets.yaml
+  - ./external-secrets.yaml
   - ./grafana.yaml
   - ./ingress-nginx.yaml
   - ./itzg-minecraft-charts.yaml
@@ -26,6 +26,7 @@ resources:
   - ./jetstack.yaml
   # - ./kyverno.yaml
   - ./metrics-server.yaml
+  - ./minio.yaml
   # - ./node-feature-discovery.yaml
   - ./openebs.yaml
   # - ./piraeus.yaml
