@@ -10,12 +10,14 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-bitwarden-secrets-manager
   path: ./kubernetes/apps/observability/thanos/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+  wait: true
   interval: 30m
   retryInterval: 1m
-  timeout: 15m
+  timeout: 5m

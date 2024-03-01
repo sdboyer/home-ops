@@ -15,6 +15,7 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
+  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -29,19 +30,40 @@ spec:
       namespace: openebs-system
     - name: redis
       namespace: database
+  valuesFrom:
+    - targetPath: objstoreConfig.config.bucket
+      kind: ConfigMap
+      name: thanos-secret
+      valuesKey: s3-bucket
+    - targetPath: objstoreConfig.config.endpoint
+      kind: ConfigMap
+      name: thanos-secret
+      valuesKey: s3-endpoint
+    - targetPath: objstoreConfig.config.region
+      kind: ConfigMap
+      name: thanos-secret
+      valuesKey: s3-region
+    - targetPath: objstoreConfig.config.access_key
+      kind: Secret
+      name: thanos-secret
+      valuesKey: access_key
+    - targetPath: objstoreConfig.config.secret_key
+      kind: Secret
+      name: thanos-secret
+      valuesKey: secret-key
   values:
     image:
       registry: quay.io
       repository: thanos/thanos
       tag: v0.34.1
     objstoreConfig:
-      type: S3
+      type: s3
       config:
         insecure: true
-        access_key: "${AWS_ACCESS_KEY_ID}"
-        secret_key: "${AWS_SECRET_ACCESS_KEY}"
-        endpoint: "${AWS_S3_ENDPOINT}"
-        bucket: thanos
+        # access_key: "${AWS_ACCESS_KEY_ID}"
+        # secret_key: "${AWS_SECRET_ACCESS_KEY}"
+        # endpoint: "${AWS_S3_ENDPOINT}"
+        # bucket: thanos
     receive:
       enabled: false
       networkPolicy:
@@ -75,9 +97,7 @@ spec:
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: observability
-      # TODO
-      # stores: ["thanos.h.sdboyer.io:10901"]
-      stores: ["thanos.boyers.club:10901"]
+      stores: ["thanos.${SECRET_SYS_DOMAIN}:10901"]
       networkPolicy:
         enabled: false
     bucketweb:
@@ -113,7 +133,7 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabel: __replica__
-      alertmanagers: ["http://alertmanager-operated.observability.svc.cluster.local:9093"]
+      # alertmanagers: ["http://alertmanager-operated.observability.svc.cluster.local:9093"]
       extraFlags: ["--web.prefix-header=X-Forwarded-Prefix"]
       config: |-
         groups:
