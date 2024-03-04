@@ -29,3 +29,8 @@ kubernetes:
         "rpi8.h.sdboyer.io":
           ansible_user: "sdboyer"
           ansible_host: "10.10.1.208"
+ceph-plane:
+  hosts:
+    "rpi6.h.sdboyer.io":
+    "rpi7.h.sdboyer.io":
+    "rpi8.h.sdboyer.io":
