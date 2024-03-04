@@ -8,12 +8,12 @@ resources:
   - ./bitnami.yaml
   - ./bjw-s.yaml
   - ./cilium.yaml
-  # - ./cloudnative-pg.yaml
+  - ./cloudnative-pg.yaml
   # - ./coredns.yaml
-  # - ./crossplane.yaml
+  - ./crossplane.yaml
   # - ./crunchydata.yaml
   # - ./csi-driver-nfs.yaml
-  # - ./descheduler.yaml
+  - ./descheduler.yaml
   - ./democratic-csi.yaml
   # - ./emqx.yaml
   - ./external-dns.yaml
@@ -24,9 +24,8 @@ resources:
   - ./k8s-gateway.yaml
   # - ./intel.yaml
   - ./jetstack.yaml
-  # - ./kyverno.yaml
+  - ./kyverno.yaml
   - ./metrics-server.yaml
-  - ./minio.yaml
   # - ./node-feature-discovery.yaml
   - ./openebs.yaml
   # - ./piraeus.yaml
