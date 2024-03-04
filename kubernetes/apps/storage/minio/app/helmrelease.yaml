@@ -76,7 +76,7 @@ spec:
                 memory: 100Mi
                 cpu: 100m
               limits:
-                memory: 750Mi
+                memory: 384Mi
     service:
       main:
         enabled: true
@@ -125,7 +125,7 @@ spec:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
         hosts:
-          - host: &api-host "s3.${SECRET_DOMAIN}"
+          - host: &api-host "s3.${SECRET_SYS_DOMAIN}"
             paths:
               - path: /
                 service:
