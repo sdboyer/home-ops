@@ -138,4 +138,5 @@ spec:
       data:
         enabled: true
         storageClass: "${CLUSTER_STORAGE_BLOCK}"
+        accessMode: ReadWriteOnce
         size: 30Gi
