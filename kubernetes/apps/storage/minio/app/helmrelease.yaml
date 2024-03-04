@@ -1,0 +1,141 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: minio
+  namespace: storage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 8675
+        runAsGroup: 8675
+        fsGroup: 8675
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2024-02-26T09-33-48Z
+            env:
+              TZ: "${TIMEZONE}"
+              MINIO_UPDATE: "off"
+              MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_DOMAIN}
+              MINIO_SERVER_URL: https://s3.${SECRET_DOMAIN}
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
+              # MINIO_IDENTITY_OPENID_REDIRECT_URI: https://minio.${SECRET_DOMAIN}/oauth_callback
+              # MINIO_IDENTITY_OPENID_CONFIG_URL: https://id.${SECRET_DOMAIN}/application/o/minio/.well-known/openid-configuration
+              # MINIO_IDENTITY_OPENID_SCOPES: openid,profile,email,minio
+            envFrom:
+              - secretRef:
+                  name: minio-secret
+            args: ["server", "/data", "--console-address", ":9001"]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /minio/health/live
+                    port: &api-port 9000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                memory: 100Mi
+                cpu: 100m
+              limits:
+                memory: 750Mi
+    service:
+      main:
+        enabled: true
+        ports:
+          http:
+            port: 9001
+          api:
+            enabled: true
+            port: *api-port
+    serviceMonitor:
+      main:
+        enabled: false
+        endpoints:
+          - port: api
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
+            bearerTokenSecret:
+              name: minio-secret
+              key: MINIO_PROMETHEUS_TOKEN
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/icon: mdi:pail
+        hosts:
+          - host: &console-host "minio.${SECRET_SYS_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *console-host
+      s3:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/enable: "false"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            chunked_transfer_encoding off;
+        hosts:
+          - host: &api-host "s3.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: api
+        tls:
+          - hosts:
+              - *api-host
+    persistence:
+      data:
+        enabled: true
+        storageClass: "${CLUSTER_STORAGE_BLOCK}"
+        size: 30Gi
