@@ -70,6 +70,16 @@ build {
 
   provisioner "shell" {
     inline = [
+      "echo 'Disabling swap...'",
+      "dphys-swapfile swapoff",
+      "dphys-swapfile uninstall",
+      "update-rc.d dphys-swapfile remove",
+      "apt purge -y dphys-swapfile"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
       "echo 'Disabling wifi...'",
       "echo 'dtoverlay=disable-wifi' >> /boot/config.txt",
     ]
