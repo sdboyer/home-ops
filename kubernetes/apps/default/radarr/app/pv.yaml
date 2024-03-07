@@ -2,18 +2,18 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: sabnzbd-config
-  namespace: home
+  name: radarr-config
+  namespace: default
 spec:
-  storageClassName: sabnzbd-config-pv
+  storageClassName: radarr-config-pv
   capacity:
-    storage: 30Gi
+    storage: 20Gi
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
   iscsi:
     targetPortal: 10.10.1.228
     iqn: iqn.2018-11.io.sdboyer.h:kube1
-    lun: 4
+    lun: 2
     fsType: 'ext4'
     readOnly: false
