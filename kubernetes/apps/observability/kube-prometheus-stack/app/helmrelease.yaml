@@ -29,6 +29,8 @@ spec:
   dependsOn:
     - name: thanos
       namespace: observability
+    - name: openebs
+      namespace: openebs-system
   values:
     crds:
       enabled: true
