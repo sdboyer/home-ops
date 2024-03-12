@@ -168,11 +168,11 @@ spec:
         #       - targets:
         #           - alertmanager.${PRIMARY_DOMAIN}
         retention: 2d
-        retentionSize: 2GB
+        retentionSize: 10GB
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: "${CLUSTER_STORAGE_BLOCK}"
+              storageClassName: openebs-hostpath
               resources:
                 requests:
                   storage: 20Gi
