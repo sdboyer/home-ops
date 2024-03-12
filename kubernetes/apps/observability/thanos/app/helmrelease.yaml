@@ -28,6 +28,8 @@ spec:
   dependsOn:
     - name: redis
       namespace: database
+    - name: openebs
+      namespace: openebs-system
   valuesFrom:
     - targetPath: objstoreConfig.config.bucket
       kind: Secret
@@ -109,7 +111,7 @@ spec:
       retentionResolution1h: 60d
       persistence:
         enabled: true
-        storageClass: "${CLUSTER_STORAGE_BLOCK}"
+        storageClass: openebs-hostpath
         size: 10Gi
       networkPolicy:
         enabled: false
@@ -119,7 +121,7 @@ spec:
       config: *config
       persistence:
         enabled: true
-        storageClass: "${CLUSTER_STORAGE_BLOCK}"
+        storageClass: openebs-hostpath
         size: 10Gi
       networkPolicy:
         enabled: false
