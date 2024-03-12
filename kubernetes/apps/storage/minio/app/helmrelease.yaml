@@ -64,10 +64,10 @@ spec:
                   httpGet:
                     path: /minio/health/live
                     port: &api-port 9000
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
               readiness: *probes
               startup:
                 enabled: false
