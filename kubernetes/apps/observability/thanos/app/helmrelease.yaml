@@ -93,7 +93,8 @@ spec:
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: observability
-      stores: ["thanos.${SECRET_SYS_DOMAIN}:10901"]
+      # it's not exposed yet
+      # stores: ["thanos.${SECRET_SYS_DOMAIN}:10901"]
       networkPolicy:
         enabled: false
     bucketweb:
