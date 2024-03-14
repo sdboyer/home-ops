@@ -112,7 +112,7 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-        size: 10Gi
+        size: 5Gi
       networkPolicy:
         enabled: false
     storegateway:
@@ -122,7 +122,7 @@ spec:
       persistence:
         enabled: true
         storageClass: openebs-hostpath
-        size: 10Gi
+        size: 5Gi
       networkPolicy:
         enabled: false
     ruler:
