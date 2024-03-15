@@ -6,7 +6,10 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./prometheusrules
-# configMapGenerator:
+configMapGenerator:
+  - name: flux-kube-state-metrics-config
+    files:
+      - kube-state-metrics-config.yaml=./resources/kube-state-metrics-config.yaml
 #   - name: alertmanager-config-tpl
 #     files:
 #       - alertmanager.yaml=./resources/alertmanager.yaml
