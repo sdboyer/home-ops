@@ -40,28 +40,27 @@ spec:
       enabled: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      # TODO re-enable
-      enabled: false
-      # ingress:
-      #   enabled: true
-      #   pathType: Prefix
-      #   ingressClassName: internal
-      #   hosts:
-      #     - &host alertmanager.${SECRET_SYS_DOMAIN}
-      #   tls:
-      #     - hosts:
-      #         - *host
-      # alertmanagerSpec:
-      #   replicas: 2
-      #   useExistingSecret: true
-      #   configSecret: alertmanager-secret
-      #   storage:
-      #     volumeClaimTemplate:
-      #       spec:
-      #         storageClassName: "${CLUSTER_STORAGE_BLOCK}"
-      #         resources:
-      #           requests:
-      #             storage: 1Gi
+      enabled: true
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: internal
+        hosts:
+          - &amhost alertmanager.${SECRET_SYS_DOMAIN}
+        tls:
+          - hosts:
+              - *amhost
+      alertmanagerSpec:
+        replicas: 2
+        useExistingSecret: true
+        configSecret: alertmanager-secret
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "${CLUSTER_STORAGE_BLOCK}"
+              resources:
+                requests:
+                  storage: 1Gi
     kubelet:
       enabled: true
       serviceMonitor:
@@ -169,10 +168,10 @@ spec:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
-        # additionalAlertManagerConfigs:
-        #   - static_configs:
-        #       - targets:
-        #           - alertmanager.${PRIMARY_DOMAIN}
+        additionalAlertManagerConfigs:
+          - static_configs:
+              - targets:
+                  - alertmanager.${SECRET_SYS_DOMAIN}
         retention: 2d
         retentionSize: 10GB
         storageSpec:
