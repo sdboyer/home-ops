@@ -138,7 +138,7 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          # - { name: Alertmanager, orgId: 1 }
+          - { name: Alertmanager, orgId: 1 }
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
@@ -157,13 +157,13 @@ spec:
             url: http://loki-gateway.observability.svc.cluster.local
             jsonData:
               maxLines: 250
-          # - name: Alertmanager
-          #   type: alertmanager
-          #   uid: alertmanager
-          #   access: proxy
-          #   url: http://alertmanager-operated.observability.svc.cluster.local:9093
-          #   jsonData:
-          #     implementation: prometheus
+          - name: Alertmanager
+            typt: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
     dashboards:
       default:
         cloudflared:
