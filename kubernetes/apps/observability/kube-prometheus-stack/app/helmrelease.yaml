@@ -172,6 +172,16 @@ spec:
           - static_configs:
               - targets:
                   - alertmanager.${SECRET_SYS_DOMAIN}
+        additionalScrapeConfigs:
+          - job_name: "verizon-speedtest"
+            metrics_path: /probe
+            params:
+              script: [speedtest]
+            static_configs:
+              - targets:
+                - 10.10.1.241:9469
+            scrape_interval: 15m
+            scrape_timeout: 10m
         retention: 2d
         retentionSize: 10GB
         storageSpec:
