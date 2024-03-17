@@ -5,8 +5,8 @@ metadata:
   name: cluster-apps-speedtest-exporter
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
-  path: ./kubernetes/apps/monitoring/exporters/speedtest-exporter/app
+  targetNamespace: observability
+  path: ./kubernetes/apps/observability/exporters/speedtest-exporter/app
   prune: true
   sourceRef:
     kind: GitRepository
