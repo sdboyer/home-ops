@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  # - ./notifications.yaml
+  - ./notifications.yaml
   # Flux-Kustomizations
   # - ./gatus/ks.yaml
   - ./grafana/ks.yaml
@@ -16,3 +16,4 @@ resources:
   - ./thanos/ks.yaml
   # - ./unpoller/ks.yaml
   - ./vector/ks.yaml
+  - ./exporters
