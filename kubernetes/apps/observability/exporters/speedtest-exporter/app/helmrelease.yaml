@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -62,7 +63,6 @@ spec:
         globalMounts:
           - path: /.config
     service:
-      name: speedtest-wow
       app:
         controller: *app
         ports:
@@ -71,6 +71,7 @@ spec:
     serviceMonitor:
       app:
         serviceName: *app
+        nameOverride: speedtest-wow
         endpoints:
           - port: http
             scheme: http
