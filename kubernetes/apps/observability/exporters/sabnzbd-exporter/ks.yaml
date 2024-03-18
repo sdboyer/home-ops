@@ -8,7 +8,7 @@ spec:
   targetNamespace: observability
   dependsOn:
     - name: cluster-apps-sabnzbd
-    - name: cluster-apps-external-secrets-stores
+    - name: external-secrets-bitwarden-secrets-manager
   path: ./kubernetes/apps/observability/exporters/sabnzbd-exporter/app
   prune: true
   sourceRef:
