@@ -5,7 +5,8 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  # - ./addons/ks.yaml
   - ./webhooks/ks.yaml
-  # - ./notifications.yaml
+  - ./notifications.yaml
   # Flux-Kustomizations
   - ./addons/ks.yaml
