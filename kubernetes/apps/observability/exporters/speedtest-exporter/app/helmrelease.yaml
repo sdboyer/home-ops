@@ -71,7 +71,7 @@ spec:
     serviceMonitor:
       app:
         serviceName: *app
-        nameOverride: speedtest-wow
+        # nameOverride: speedtest-wow
         endpoints:
           - port: http
             scheme: http
