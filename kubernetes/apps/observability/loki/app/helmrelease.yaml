@@ -111,7 +111,7 @@ spec:
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
           shared_store: s3
-          compaction_interval: 10m
+          compaction_interval: 20m
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150
