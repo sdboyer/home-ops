@@ -155,7 +155,8 @@ spec:
     backend:
       replicas: 2
       persistence:
-        storageClass: "${CLUSTER_STORAGE_BLOCK}"
+        storageClass: openebs-hostpath
+        size: 5Gi
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake

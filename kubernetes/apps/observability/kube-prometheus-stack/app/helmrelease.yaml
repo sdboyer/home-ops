@@ -190,7 +190,7 @@ spec:
               storageClassName: openebs-hostpath
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: 10Gi
         thanos:
           image: quay.io/thanos/thanos:${THANOS_VERSION}
           version: "${THANOS_VERSION#v}"
