@@ -196,6 +196,5 @@ spec:
           version: "${THANOS_VERSION#v}"
           objectStorageConfig:
             existingSecret:
-              name: thanos-objstore-secret
+              name: thanos-objstore-config
               key: objstore.yml
-
