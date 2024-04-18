@@ -89,11 +89,11 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubeControllerManager:
       enabled: true
-      endpoints: &cp
+      endpoints:
         - 10.10.1.8
-        - 10.10.1.10
-        - 10.10.1.11
-        - 10.10.1.12
+        # - 10.10.1.10
+        # - 10.10.1.11
+        # - 10.10.1.12
       serviceMonitor:
         metricRelabelings:
           # Remove duplicate labels provided by k3s
