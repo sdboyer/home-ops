@@ -54,10 +54,10 @@ spec:
       io.cilium/lb-ipam-ips: "10.10.1.14"
       mc-router.itzg.me/externalServerName: "boyercraft.${SECRET_DOMAIN}"
     # ensure it's not scheduled on the control plane
-    tolerations:
-      - key: "node-role.kubernetes.io/control-plane"
-        value: true
-        effect: "NoSchedule"
+    # tolerations:
+    #   - key: "node-role.kubernetes.io/control-plane"
+    #     value: true
+    #     effect: "NoSchedule"
     minecraftServer:
       eula: "TRUE"
       version: "LATEST"
